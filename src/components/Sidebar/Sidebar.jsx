@@ -1,6 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
-import home from "/Users/williamesteban/Desktop/ProyectosReact/canva-project/src/assets/icons/home.png";
+import home from "../../assets/icons/home.png"; // Ruta relativa
 
 const Sidebar = () => {
   return (
