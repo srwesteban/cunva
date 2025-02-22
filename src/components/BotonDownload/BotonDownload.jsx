@@ -20,12 +20,10 @@ const BotonDownload = ({ image }) => {
 
   return (
     <div>
-      {image && (
-        <div>
+      <div>
           <button onClick={() => handleDownload('png')}>Descargar PNG</button>
           <button onClick={() => handleDownload('jpeg')}>Descargar JPEG</button>
         </div>
-      )}
     </div>
   );
 };
