@@ -1,10 +1,11 @@
-import React from 'react'
-import './Board.css'
-const Board = () => {
+import React from 'react';
+import './Board.css';
+import ImageEditor from '../ImageEditor/ImageEditor';
+
+const Board = ({ pageIndex }) => {
   return (
     <div className="board">
-      <h1>Componente Board</h1>
-      <p>Este es el contenido de la sección Board</p>
+      <ImageEditor pageIndex={pageIndex} />
     </div>
   );
 };
