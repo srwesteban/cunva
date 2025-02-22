@@ -5,7 +5,7 @@ const BotonExport = ({ pageIndex, elements, setPages }) => {
 
   const exportConfig = () => {
     if (elements.length === 0) {
-      alert("No hay elementos para exportar.");
+      alert("Save for created a Json");
       return;
     }
 
