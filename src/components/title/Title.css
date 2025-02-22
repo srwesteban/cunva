@@ -1,0 +1,44 @@
+.titulo {
+  display: flex;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  position: relative;
+  justify-content: center;
+  color: #8a2be2;
+}
+
+.titulo span {
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 2px 2px 4px rgba(178, 19, 206, 0.3);
+  transition: background-image 0.3s ease;
+}
+
+.titulo .letra1 {
+  transition-delay: 0s;
+}
+
+.titulo .letra2 {
+  transition-delay: 0.1s;
+}
+
+.titulo .letra3 {
+  transition-delay: 0.2s;
+}
+
+.titulo .letra4 {
+  transition-delay: 0.3s;
+}
+
+.titulo .letra5 {
+  transition-delay: 0.4s;
+}
+
+.titulo span:hover {
+  background-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff00, #0000ff, #8a2be2);
+  -webkit-background-clip: text;
+  color: transparent;
+}

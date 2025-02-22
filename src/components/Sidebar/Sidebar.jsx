@@ -1,6 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
-import home from "../../assets/icons/home.png"; // Ruta relativa
+import home from "../../assets/icons/home.png";
 
 const Sidebar = () => {
   return (
