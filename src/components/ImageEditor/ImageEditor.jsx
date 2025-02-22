@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import FilerobotImageEditor from "react-filerobot-image-editor";
+import React, { useState, Suspense } from "react";
 import "./ImageEditor.css";
+const FilerobotImageEditor = React.lazy(() => import("react-filerobot-image-editor"));
 
 const ImageEditor = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,10 +24,12 @@ const ImageEditor = () => {
       {!image && <input type="file" accept="image/*" onChange={handleImageUpload} />}
       {image && isOpen && (
         <div id="editor-container" className="fullscreen-editor">
-          <FilerobotImageEditor
-            source={image}
-            onClose={() => setIsOpen(false)}
-          />
+          <Suspense fallback={<div>Loading editor...</div>}>
+            <FilerobotImageEditor
+              source={image}
+              onClose={() => setIsOpen(false)}
+            />
+          </Suspense>
         </div>
       )}
     </div>
