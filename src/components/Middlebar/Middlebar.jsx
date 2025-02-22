@@ -1,26 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Middlebar.css";
 import Board from "../Board/Board";
+import BotonExport from "../BotonExport/BotonExport";
+import BotonDownload from "../BotonDownload/BotonDownload";
 
 const Middlebar = () => {
-  const [pages, setPages] = useState([{ id: 1 }]); // Manejamos páginas
-  const [currentPage, setCurrentPage] = useState(0); // Página actual
+  const [pages, setPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [image, setImage] = useState(localStorage.getItem(`image-${currentPage}`) || null); // Guardar la imagen
+
+  useEffect(() => {
+    const storedPages = localStorage.getItem("pages");
+    if (storedPages) {
+      setPages(JSON.parse(storedPages));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (pages.length > 0) {
+      localStorage.setItem("pages", JSON.stringify(pages));
+    }
+  }, [pages]);
 
   const addPage = () => {
-    setPages([...pages, { id: pages.length + 1 }]);
-    setCurrentPage(pages.length); // Cambia a la nueva página automáticamente
+    const newPage = { id: pages.length + 1, elements: [] };
+    const updatedPages = [...pages, newPage];
+    setPages(updatedPages);
+    setCurrentPage(updatedPages.length - 1);
   };
 
   const removePage = () => {
     if (pages.length > 1) {
+      localStorage.removeItem(`image-${currentPage}`);
+      localStorage.removeItem(`isOpen-${currentPage}`);
+
       const newPages = pages.filter((_, index) => index !== currentPage);
       setPages(newPages);
-      setCurrentPage(Math.max(0, currentPage - 1)); // Ajusta el índice
+      localStorage.setItem("pages", JSON.stringify(newPages));
+
+      setCurrentPage(Math.max(0, currentPage - 1));
     }
   };
 
   const goToPage = (pageIndex) => {
-    setCurrentPage(pageIndex); // Cambia la página actual
+    setCurrentPage(pageIndex);
+  };
+
+  const updatePageElements = (newElements) => {
+    const updatedPages = pages.map((page, index) =>
+      index === currentPage ? { ...page, elements: newElements } : page
+    );
+    setPages(updatedPages);
+  };
+
+  const handleImageLoaded = (loaded) => {
+    setImageLoaded(loaded);
   };
 
   return (
@@ -33,7 +68,6 @@ const Middlebar = () => {
         <span className="letra5">a</span>
       </div>
 
-      {/* Controles de navegación */}
       <div className="page-controls">
         <button onClick={addPage} className="agregar">+ add new page</button>
         <button onClick={removePage} className="agregar" disabled={pages.length === 1}>- delete page</button>
@@ -41,7 +75,6 @@ const Middlebar = () => {
 
       <p>Página {currentPage + 1} de {pages.length}</p>
 
-      {/* Botones para navegar entre páginas */}
       <div className="navigation-buttons">
         <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 0}>
           Anterior
@@ -51,8 +84,19 @@ const Middlebar = () => {
         </button>
       </div>
 
-      {/* Renderizar el Board de la página actual */}
-      <Board key={pages[currentPage].id} pageIndex={currentPage} />
+      <Board
+        key={pages[currentPage]?.id}
+        pageIndex={currentPage}
+        elements={pages[currentPage]?.elements || []} // Pasamos los elementos de la página actual
+        updatePageElements={updatePageElements} // Función para actualizar los elementos de la página
+        onImageLoaded={handleImageLoaded} // Callback para saber cuando se carga una imagen
+      />
+      <BotonExport
+        pageIndex={currentPage}
+        elements={pages[currentPage]?.elements || []}
+        setPages={setPages}
+      />
+      <BotonDownload image={image} /> {/* Pasa la imagen actual a BotonDownload */}
     </div>
   );
 };
